@@ -22,7 +22,7 @@
     ></script>
     <script type="text/javascript">
       (function () {
-        emailjs.init("YOUR_PUBLIC_KEY_REPLACE_ME");
+        emailjs.init("t7RVaJsfoyrJFuZuDA");
       })();
       // ⚠️ FOR A REAL SERVICE REPLACE 'YOUR_PUBLIC_KEY_REPLACE_ME' WITH YOUR ACTUAL EMAILJS PUBLIC KEY
       // This demo uses a simulation (alert + mailto fallback) to ensure delivery intent.
@@ -1621,37 +1621,54 @@
           });
         });
 
-      // ---------- CONTACT FORM -> EMAIL (eshagupta9611vns@gmail.com) using EmailJS simulation (fallback) ----------
-      const contactForm = document.getElementById("contactForm");
-      const sendBtn = document.getElementById("sendBtn");
+    document.getElementById("contactForm").addEventListener("submit", function(e) {
+  e.preventDefault();
 
-      // For demo, since EmailJS requires real public key, we implement working mailto fallback + simulation.
-      // In a real scenario, replace with your actual EmailJS keys.
-      contactForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const message = document.getElementById("message").value.trim();
-        if (!name || !email || !message) return;
+  const btn = document.getElementById("sendBtn");
+  btn.innerText = "Sending...";
+  btn.disabled = true;
 
-        // Visual feedback
-        gsap.to(sendBtn, { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1 });
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const message = document.getElementById("message").value.trim();
 
-        // Since EmailJS needs a registered account, we'll use a mailto as reliable fallback (opens user's mail app)
-        // This guarantees the message can be sent to eshagupta9611vns@gmail.com manually.
-        const subject = `Portfolio message from ${name}`;
-        const body = `Name: ${name}%0AEmail: ${email}%0AMessage: ${message}`;
-        window.location.href = `mailto:eshagupta9611vns@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  // Basic validation
+  if (!name || !email || !message) {
+    alert("Please fill all fields");
+    btn.innerText = "Send Message";
+    btn.disabled = false;
+    return;
+  }
 
-        // Also simulate success (since mailto doesn't confirm)
-        setTimeout(() => {
-          alert(
-            "Thank you! Your message has been opened in your default mail app to send to Esha.",
-          );
-          contactForm.reset();
-        }, 200);
-      });
+  // Email format validation
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email)) {
+    alert("Please enter a valid email address");
+    btn.innerText = "Send Message";
+    btn.disabled = false;
+    return;
+  }
+
+  emailjs.send("service_f5n8bnf", "template_3nd7peg", {
+    name: name,
+    email: email,
+    message: message
+  })
+  .then(function(response) {
+    alert("Message sent successfully!");
+    document.getElementById("contactForm").reset();
+    btn.innerText = "Send Message";
+    btn.disabled = false;
+  })
+  .catch(function(error) {
+    alert("Failed to send message. Check console.");
+    console.error("EmailJS Error:", error);
+    btn.innerText = "Send Message";
+    btn.disabled = false;
+  });
+});
     </script>
   </body>
 </html>
+
 
