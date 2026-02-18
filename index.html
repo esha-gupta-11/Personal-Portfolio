@@ -685,7 +685,8 @@
       }
       .project-card {
         position: absolute;
-        width: 30vw;
+        margin-top:-7rem;
+        width: 15vw;
         max-width: 500px;
         min-width: 360px;
         background: var(--glass-bg);
@@ -725,20 +726,20 @@
         margin-bottom: 12px;
         line-height: 1.4;
       }
-      .tech-stack {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        margin-bottom: 12px;
-      }
-      .tech-tag {
-        padding: 4px 12px;
-        background: rgb(66 48 141 / 10%);
-        border: 1px solid #c6a9ff;
-        border-radius: 20px;
-        font-size: 0.7rem;
-        color: #d3b3fd;
-      }
+      .tech-marquee {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.tech-grid {
+  display: flex !important;   /* override grid if needed */
+  flex-wrap: nowrap !important;
+  gap: 20px;                  /* keep or adjust */
+  width: max-content;
+  will-change: transform;
+}
+
       .project-link {
         display: inline-flex;
         align-items: center;
@@ -1151,61 +1152,78 @@
         </div>
       </section>
 
-      <!-- tech stack (unchanged) -->
-      <section class="techstack-section">
-        <div class="techstack-container">
-          <h2 class="section-title">TECH STACK</h2>
-          <div class="tech-grid">
-            <div class="tech-card">
-              <i class="ph-light ph-file-html"></i><span>HTML</span>
-            </div>
-            <div class="tech-card">
-              <i class="ph-light ph-file-css"></i><span>CSS</span>
-            </div>
-            <div class="tech-card">
-              <i class="ph-light ph-file-js"></i><span>JavaScript</span>
-            </div>
-            <div class="tech-card">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
-                height="28"
-                style="filter: brightness(0) invert(1)"
-              /><span style="margin-top: 13px">React</span>
-            </div>
-            <div class="tech-card">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg"
-                height="28"
-                alt="Node.js"
-                style="filter: brightness(0) invert(1)"
-              /><span style="margin-top: 12px">Node.js</span>
-            </div>
-            <div class="tech-card">
-              <i class="ph-light ph-database"></i><span>MongoDB</span>
-            </div>
-            <div class="tech-card">
-              <i class="ph-light ph-git-branch"></i><span>Git</span>
-            </div>
-            <div class="tech-card">
-              <i class="ph-light ph-github-logo"></i><span>GitHub</span>
-            </div>
-            <div class="tech-card">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/9/98/WordPress_blue_logo.svg"
-                height="28"
-                alt="WordPress"
-                style="filter: brightness(0) invert(1)"
-              /><span style="margin-top: 12px">WordPress</span>
-            </div>
-            <div class="tech-card">
-              <i class="ph-light ph-shopping-cart"></i><span>Shopify</span>
-            </div>
-            <div class="tech-card">
-              <i class="ph-light ph-figma-logo"></i><span>Figma</span>
-            </div>
-          </div>
+      <!-- tech stack -->
+<!-- tech stack -->
+<section class="techstack-section">
+  <div class="techstack-container">
+    <h2 class="section-title">TECH STACK</h2>
+
+    <!-- NEW MARQUEE WRAPPER -->
+    <div class="tech-marquee">
+      <div class="tech-grid" id="techGrid">
+
+        <div class="tech-card">
+          <i class="ph-light ph-file-html"></i><span>HTML</span>
         </div>
-      </section>
+
+        <div class="tech-card">
+          <i class="ph-light ph-file-css"></i><span>CSS</span>
+        </div>
+
+        <div class="tech-card">
+          <i class="ph-light ph-file-js"></i><span>JavaScript</span>
+        </div>
+
+        <div class="tech-card">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
+               height="28"
+               style="filter: brightness(0) invert(1)" />
+          <span style="margin-top: 13px">React</span>
+        </div>
+
+        <div class="tech-card">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg"
+               height="28"
+               alt="Node.js"
+               style="filter: brightness(0) invert(1)" />
+          <span style="margin-top: 12px">Node.js</span>
+        </div>
+
+        <div class="tech-card">
+          <i class="ph-light ph-database"></i><span>MongoDB</span>
+        </div>
+
+        <div class="tech-card">
+          <i class="ph-light ph-git-branch"></i><span>Git</span>
+        </div>
+
+        <div class="tech-card">
+          <i class="ph-light ph-github-logo"></i><span>GitHub</span>
+        </div>
+
+        <div class="tech-card">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/WordPress_blue_logo.svg"
+               height="28"
+               alt="WordPress"
+               style="filter: brightness(0) invert(1)" />
+          <span style="margin-top: 12px">WordPress</span>
+        </div>
+
+        <div class="tech-card">
+          <i class="ph-light ph-shopping-cart"></i><span>Shopify</span>
+        </div>
+
+        <div class="tech-card">
+          <i class="ph-light ph-figma-logo"></i><span>Figma</span>
+        </div>
+
+      </div>
+    </div>
+    <!-- END MARQUEE WRAPPER -->
+
+  </div>
+</section>
+
 
       <!-- projects (unchanged) -->
       <section id="projects" class="projects">
@@ -1523,6 +1541,37 @@
         }
       })();
 
+    //   marquee
+    const grid = document.getElementById("techGrid");
+
+  // Duplicate items for seamless infinite scroll
+  grid.innerHTML += grid.innerHTML;
+
+  let scrollAmount = 0;
+  const speed = 0.6; // change speed here
+  let isPaused = false;
+
+  const marquee = document.querySelector(".tech-marquee");
+
+  marquee.addEventListener("mouseenter", () => isPaused = true);
+  marquee.addEventListener("mouseleave", () => isPaused = false);
+
+  function animate() {
+    if (!isPaused) {
+      scrollAmount += speed;
+
+      if (scrollAmount >= grid.scrollWidth / 2) {
+        scrollAmount = 0;
+      }
+
+      grid.style.transform = `translateX(-${scrollAmount}px)`;
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
       // ---------- CINEMATIC SCROLL ANIMATIONS (unchanged) ----------
       gsap.registerPlugin(ScrollTrigger);
       gsap.to("#imageFrame", {
@@ -1788,6 +1837,5 @@ if (resumeBtn) {
     </script>
   </body>
 </html>
-
 
 
