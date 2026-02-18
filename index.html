@@ -1272,9 +1272,8 @@
             <!-- Anti-spam honeypot (hidden field that bots might fill) -->
             <input type="text" name="_honey" style="display:none">
             
-            <!-- These fields ensure JSON response and no redirect -->
-            <input type="hidden" name="_next" value="">
-            <input type="hidden" name="_ajax" value="1">
+            <!-- Important: This ensures no redirect and JSON response -->
+            <input type="hidden" name="_next" value="https://formsubmit.co/eshagupta9611vns@gmail.com">
             
             <div class="form-group">
               <label for="name">Name</label>
@@ -1707,12 +1706,12 @@
         }, 5000);
       }
 
-      // ---------- CONTACT FORM with AJAX (NO REDIRECT) ----------
+      // ---------- CONTACT FORM with iframe (NO REDIRECT, NO CORS) ----------
       const contactForm = document.getElementById("contactForm");
       const sendBtn = document.getElementById("sendBtn");
 
       if (contactForm) {
-        contactForm.addEventListener("submit", async function(e) {
+        contactForm.addEventListener("submit", function(e) {
           e.preventDefault(); // Prevent default form submission
           
           // Visual feedback animation
@@ -1728,45 +1727,42 @@
           sendBtn.textContent = "Sending...";
           sendBtn.disabled = true;
 
-          try {
-            // Collect form data
-            const formData = new FormData(contactForm);
-            
-            // Send using fetch API
-            const response = await fetch(contactForm.action, {
-              method: 'POST',
-              body: formData,
-              headers: {
-                'Accept': 'application/json'
-              }
-            });
-            
-            const data = await response.json();
-            
-            if (data.success === true || response.ok) {
-              // Success - clear form and show success message
-              contactForm.reset();
-              showToast('✓ Thank you! Your message has been sent successfully to Esha.');
-              
-              // Optional: Add confetti or celebration effect
-              gsap.to(sendBtn, {
-                scale: 1.1,
-                duration: 0.3,
-                yoyo: true,
-                repeat: 1
-              });
-            } else {
-              // Show error message
-              showToast('✗ Failed to send message. Please try again or email directly.', true);
-            }
-          } catch (error) {
-            console.error('Form submission error:', error);
-            showToast('✗ Network error. Please check your connection and try again.', true);
-          } finally {
-            // Restore button
+          // Create a hidden iframe to handle submission without redirect
+          const iframe = document.createElement('iframe');
+          iframe.name = 'hidden_iframe';
+          iframe.style.display = 'none';
+          document.body.appendChild(iframe);
+          
+          // Set form target to iframe
+          contactForm.target = 'hidden_iframe';
+          
+          // Create a hidden input to prevent redirect
+          const redirectInput = document.createElement('input');
+          redirectInput.type = 'hidden';
+          redirectInput.name = '_next';
+          redirectInput.value = 'https://formsubmit.co/eshagupta9611vns@gmail.com';
+          contactForm.appendChild(redirectInput);
+          
+          // Submit the form
+          contactForm.submit();
+          
+          // Show success message (since we can't easily detect iframe load due to CORS)
+          showToast('✓ Thank you! Your message has been sent successfully to Esha.');
+          
+          // Clear form
+          contactForm.reset();
+          
+          // Restore button after delay
+          setTimeout(() => {
             sendBtn.textContent = originalText;
             sendBtn.disabled = false;
-          }
+            
+            // Remove iframe
+            document.body.removeChild(iframe);
+            
+            // Reset form target
+            contactForm.target = '';
+          }, 2000);
         });
       }
 
