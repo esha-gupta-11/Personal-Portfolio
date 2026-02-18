@@ -851,6 +851,33 @@
         opacity: 0.7;
         cursor: not-allowed;
       }
+
+      /* Toast notification styles */
+      .toast-notification {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: linear-gradient(135deg, #00d4ff, #7c3aed);
+        color: white;
+        padding: 16px 24px;
+        border-radius: 50px;
+        box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        z-index: 9999;
+        font-weight: 600;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .toast-notification.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .toast-notification.error {
+        background: linear-gradient(135deg, #ff4757, #ff6b81);
+      }
+
       .social-links {
         display: flex;
         justify-content: center;
@@ -960,6 +987,12 @@
         .contact-form {
           padding: 30px;
         }
+        .toast-notification {
+          bottom: 20px;
+          right: 20px;
+          left: 20px;
+          text-align: center;
+        }
       }
     </style>
   </head>
@@ -967,6 +1000,9 @@
     <div class="corner-fade"></div>
     <div class="fade-edge-top"></div>
     <div class="fade-edge-bottom"></div>
+
+    <!-- Toast notification container -->
+    <div id="toast" class="toast-notification"></div>
 
     <nav>
       <div class="logo">Esha</div>
@@ -1218,24 +1254,27 @@
         </div>
       </section>
 
-      <!-- CONTACT with FormSubmit (messages go to eshagupta9611vns@gmail.com) -->
+      <!-- CONTACT with FormSubmit AJAX (no redirect) -->
       <section id="contact" class="contact">
         <h2 class="section-title">Get In Touch</h2>
         <div class="contact-container">
           <form 
             class="contact-form" 
             id="contactForm" 
-            action="0687b553fa52c0a59041a47e37186d0e" 
+            action="https://formsubmit.co/eshagupta9611vns@gmail.com" 
             method="POST"
           >
             <!-- FormSubmit configuration -->
             <input type="hidden" name="_subject" value="New Portfolio Contact from Esha's Website">
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_template" value="box">
-            <input type="hidden" name="_confirmation" value="Thank you for reaching out! Your message has been sent successfully. Esha will get back to you soon.">
             
             <!-- Anti-spam honeypot (hidden field that bots might fill) -->
             <input type="text" name="_honey" style="display:none">
+            
+            <!-- These fields ensure JSON response and no redirect -->
+            <input type="hidden" name="_next" value="">
+            <input type="hidden" name="_ajax" value="1">
             
             <div class="form-group">
               <label for="name">Name</label>
@@ -1652,12 +1691,30 @@
           });
         });
 
-      // ---------- CONTACT FORM with FormSubmit (animation feedback) ----------
+      // ---------- TOAST NOTIFICATION FUNCTION ----------
+      function showToast(message, isError = false) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        if (isError) {
+          toast.classList.add('error');
+        } else {
+          toast.classList.remove('error');
+        }
+        
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 5000);
+      }
+
+      // ---------- CONTACT FORM with AJAX (NO REDIRECT) ----------
       const contactForm = document.getElementById("contactForm");
       const sendBtn = document.getElementById("sendBtn");
 
       if (contactForm) {
-        contactForm.addEventListener("submit", function(e) {
+        contactForm.addEventListener("submit", async function(e) {
+          e.preventDefault(); // Prevent default form submission
+          
           // Visual feedback animation
           gsap.to(sendBtn, {
             scale: 0.95,
@@ -1666,14 +1723,50 @@
             repeat: 1
           });
           
-          // Change button text temporarily
+          // Change button text
+          const originalText = sendBtn.textContent;
           sendBtn.textContent = "Sending...";
-          
-          // FormSubmit will handle the actual submission
-          // The form will redirect to FormSubmit's success page with the confirmation message
-          
-          // Note: We're not preventing default - FormSubmit handles the redirect
-          // This is the correct behavior for FormSubmit
+          sendBtn.disabled = true;
+
+          try {
+            // Collect form data
+            const formData = new FormData(contactForm);
+            
+            // Send using fetch API
+            const response = await fetch(contactForm.action, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'Accept': 'application/json'
+              }
+            });
+            
+            const data = await response.json();
+            
+            if (data.success === true || response.ok) {
+              // Success - clear form and show success message
+              contactForm.reset();
+              showToast('✓ Thank you! Your message has been sent successfully to Esha.');
+              
+              // Optional: Add confetti or celebration effect
+              gsap.to(sendBtn, {
+                scale: 1.1,
+                duration: 0.3,
+                yoyo: true,
+                repeat: 1
+              });
+            } else {
+              // Show error message
+              showToast('✗ Failed to send message. Please try again or email directly.', true);
+            }
+          } catch (error) {
+            console.error('Form submission error:', error);
+            showToast('✗ Network error. Please check your connection and try again.', true);
+          } finally {
+            // Restore button
+            sendBtn.textContent = originalText;
+            sendBtn.disabled = false;
+          }
         });
       }
 
