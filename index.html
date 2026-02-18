@@ -1272,8 +1272,7 @@
             <!-- Anti-spam honeypot (hidden field that bots might fill) -->
             <input type="text" name="_honey" style="display:none">
             
-            <!-- Important: This ensures no redirect and JSON response -->
-            <input type="hidden" name="_next" value="https://formsubmit.co/eshagupta9611vns@gmail.com">
+           
             
             <div class="form-group">
               <label for="name">Name</label>
@@ -1665,6 +1664,38 @@
         },
       });
 
+      // ---------- RESUME DOWNLOAD (Professional Version) ----------
+const resumeBtn = document.getElementById("resumeDownloadBtn");
+
+if (resumeBtn) {
+  resumeBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    // Button click animation
+    gsap.to(resumeBtn, {
+      scale: 0.95,
+      duration: 0.1,
+      yoyo: true,
+      repeat: 1
+    });
+
+    // Google Drive direct download link
+    const fileId = "1M44BUMubzxZp3pB4_nmjB0sYukrG5TAU";
+    const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+
+    // Create temporary anchor
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = "Esha_Resume.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Show toast notification
+    showToast("📄 Resume download started!");
+  });
+}
+
      
 
       // ---------- TOAST NOTIFICATION FUNCTION ----------
@@ -1712,13 +1743,7 @@
           
           // Set form target to iframe
           contactForm.target = 'hidden_iframe';
-          
-          // Create a hidden input to prevent redirect
-          const redirectInput = document.createElement('input');
-          redirectInput.type = 'hidden';
-          redirectInput.name = '_next';
-          redirectInput.value = 'https://formsubmit.co/eshagupta9611vns@gmail.com';
-          contactForm.appendChild(redirectInput);
+         
           
           // Submit the form
           contactForm.submit();
@@ -1763,5 +1788,6 @@
     </script>
   </body>
 </html>
+
 
 
