@@ -16,13 +16,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <!-- EmailJS for contact form delivery to eshagupta9611vns@gmail.com -->
+   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
     <script
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
     ></script>
     <script type="text/javascript">
       (function () {
-        emailjs.init("t7RVaJsfoyrJFuZuDA");
+        emailjs.init("t7RVaJsfoyrJFuZDA");
       })();
       // ⚠️ FOR A REAL SERVICE REPLACE 'YOUR_PUBLIC_KEY_REPLACE_ME' WITH YOUR ACTUAL EMAILJS PUBLIC KEY
       // This demo uses a simulation (alert + mailto fallback) to ensure delivery intent.
@@ -1212,64 +1214,69 @@
         </div>
       </section>
 
-      <!-- CONTACT with EmailJS integration (messages go to eshagupta9611vns@gmail.com) -->
-      <section id="contact" class="contact">
-        <h2 class="section-title">Get In Touch</h2>
-        <div class="contact-container">
-          <form class="contact-form" id="contactForm">
-            <div class="form-group">
-              <label for="name">Name</label
-              ><input type="text" id="name" placeholder="Your Name" required />
-            </div>
-            <div class="form-group">
-              <label for="email">Email</label
-              ><input
-                type="email"
-                id="email"
-                placeholder="your.email@example.com"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="message">Message</label
-              ><textarea
-                id="message"
-                placeholder="Tell me about your project..."
-                required
-              ></textarea>
-            </div>
-            <button type="submit" class="submit-button" id="sendBtn">
-              Send Message
-            </button>
-          </form>
-          <div class="social-links">
-            <a
-              href="https://github.com/esha-gupta-11"
-              class="social-link"
-              target="_blank"
-              ><i class="ph-light ph-github-logo"></i
-            ></a>
-            <a
-              href="https://www.linkedin.com/in/esha-gupta-aa2889309"
-              class="social-link"
-              target="_blank"
-              ><i class="ph-light ph-linkedin-logo"></i
-            ></a>
-            <a
-              href="https://www.instagram.com/myself._.esha/"
-              class="social-link"
-              target="_blank"
-              ><i class="ph ph-instagram-logo"></i
-            ></a>
-            <a
-              href="mailto:eshagupta9611vns@gmail.com"
-              class="social-link"
-              target="_blank"
-              ><i class="ph-light ph-envelope"></i
-            ></a>
-          </div>
-        </div>
-      </section>
+   <!-- CONTACT with EmailJS integration -->
+<section id="contact" class="contact">
+  <h2 class="section-title">Get In Touch</h2>
+
+  <div class="contact-container">
+    <form class="contact-form" id="contactForm">
+
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name"
+          placeholder="Your Name" 
+          required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="your.email@example.com"
+          required />
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          placeholder="Tell me about your project..."
+          required></textarea>
+      </div>
+
+      <button type="submit" class="submit-button" id="sendBtn">
+        Send Message
+      </button>
+
+      <p id="formStatus"></p>
+
+    </form>
+
+    <!-- Social Links (unchanged) -->
+    <div class="social-links">
+      <a href="https://github.com/esha-gupta-11" class="social-link" target="_blank">
+        <i class="ph-light ph-github-logo"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/esha-gupta-aa2889309" class="social-link" target="_blank">
+        <i class="ph-light ph-linkedin-logo"></i>
+      </a>
+      <a href="https://www.instagram.com/myself._.esha/" class="social-link" target="_blank">
+        <i class="ph ph-instagram-logo"></i>
+      </a>
+      <a href="mailto:eshagupta9611vns@gmail.com" class="social-link">
+        <i class="ph-light ph-envelope"></i>
+      </a>
+    </div>
+
+  </div>
+</section>
+
 
       <footer>
         <div class="footer-particles"></div>
@@ -1640,35 +1647,31 @@
     return;
   }
 
-  // Email format validation
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailPattern.test(email)) {
-    alert("Please enter a valid email address");
-    btn.innerText = "Send Message";
-    btn.disabled = false;
-    return;
-  }
+ <script>
+document.getElementById("contactForm").addEventListener("submit", function(e) {
+  e.preventDefault();
 
-  emailjs.send("service_f5n8bnf", "template_3nd7peg", {
-    name: name,
-    email: email,
-    message: message
-  })
-  .then(function(response) {
-    alert("Message sent successfully!");
-    document.getElementById("contactForm").reset();
-    btn.innerText = "Send Message";
-    btn.disabled = false;
-  })
-  .catch(function(error) {
-    alert("Failed to send message. Check console.");
-    console.error("EmailJS Error:", error);
-    btn.innerText = "Send Message";
-    btn.disabled = false;
-  });
+  const status = document.getElementById("formStatus");
+
+  const params = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    message: document.getElementById("message").value
+  };
+
+  emailjs.send("service_f5n8bnf", "template_3nd7peg", params)
+    .then(function(response) {
+      status.innerHTML = "Message sent successfully!";
+      document.getElementById("contactForm").reset();
+    })
+    .catch(function(error) {
+      status.innerHTML = "Failed to send. Check console.";
+      console.log("EmailJS Error:", error);
+    });
 });
+</script>
+
     </script>
   </body>
 </html>
-
 
