@@ -15,21 +15,6 @@
     <!-- GSAP + ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <!-- EmailJS for contact form delivery to eshagupta9611vns@gmail.com -->
-   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
-    ></script>
-    <script type="text/javascript">
-      (function () {
-        emailjs.init("t7RVaJsfoyrJFuZDA");
-      })();
-      // ⚠️ FOR A REAL SERVICE REPLACE 'YOUR_PUBLIC_KEY_REPLACE_ME' WITH YOUR ACTUAL EMAILJS PUBLIC KEY
-      // This demo uses a simulation (alert + mailto fallback) to ensure delivery intent.
-      // For production, create an EmailJS account, connect your email, and replace the key.
-    </script>
     <style>
       /* ----- YOUR EXACT PORTFOLIO STYLES (preserved 100%) ----- */
       * {
@@ -838,6 +823,13 @@
         border: 1px solid var(--glass-border);
         border-radius: 10px;
         color: var(--text-primary);
+        font-size: 1rem;
+      }
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
       }
       .submit-button {
         width: 100%;
@@ -849,6 +841,15 @@
         font-size: 1.1rem;
         font-weight: 600;
         cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .submit-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(98, 0, 255, 0.3);
+      }
+      .submit-button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
       }
       .social-links {
         display: flex;
@@ -955,6 +956,9 @@
         }
         .project-card {
           min-width: 240px;
+        }
+        .contact-form {
+          padding: 30px;
         }
       }
     </style>
@@ -1214,69 +1218,81 @@
         </div>
       </section>
 
-   <!-- CONTACT with EmailJS integration -->
-<section id="contact" class="contact">
-  <h2 class="section-title">Get In Touch</h2>
-
-  <div class="contact-container">
-    <form class="contact-form" id="contactForm">
-
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input 
-          type="text" 
-          id="name" 
-          name="name"
-          placeholder="Your Name" 
-          required />
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="your.email@example.com"
-          required />
-      </div>
-
-      <div class="form-group">
-        <label for="message">Message</label>
-        <textarea
-          id="message"
-          name="message"
-          placeholder="Tell me about your project..."
-          required></textarea>
-      </div>
-
-      <button type="submit" class="submit-button" id="sendBtn">
-        Send Message
-      </button>
-
-      <p id="formStatus"></p>
-
-    </form>
-
-    <!-- Social Links (unchanged) -->
-    <div class="social-links">
-      <a href="https://github.com/esha-gupta-11" class="social-link" target="_blank">
-        <i class="ph-light ph-github-logo"></i>
-      </a>
-      <a href="https://www.linkedin.com/in/esha-gupta-aa2889309" class="social-link" target="_blank">
-        <i class="ph-light ph-linkedin-logo"></i>
-      </a>
-      <a href="https://www.instagram.com/myself._.esha/" class="social-link" target="_blank">
-        <i class="ph ph-instagram-logo"></i>
-      </a>
-      <a href="mailto:eshagupta9611vns@gmail.com" class="social-link">
-        <i class="ph-light ph-envelope"></i>
-      </a>
-    </div>
-
-  </div>
-</section>
-
+      <!-- CONTACT with FormSubmit (messages go to eshagupta9611vns@gmail.com) -->
+      <section id="contact" class="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-container">
+          <form 
+            class="contact-form" 
+            id="contactForm" 
+            action="0687b553fa52c0a59041a47e37186d0e" 
+            method="POST"
+          >
+            <!-- FormSubmit configuration -->
+            <input type="hidden" name="_subject" value="New Portfolio Contact from Esha's Website">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="box">
+            <input type="hidden" name="_confirmation" value="Thank you for reaching out! Your message has been sent successfully. Esha will get back to you soon.">
+            
+            <!-- Anti-spam honeypot (hidden field that bots might fill) -->
+            <input type="text" name="_honey" style="display:none">
+            
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" name="name" id="name" placeholder="Your Name" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="your.email@example.com"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea
+                name="message"
+                id="message"
+                placeholder="Tell me about your project..."
+                rows="5"
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="submit-button" id="sendBtn">
+              Send Message
+            </button>
+          </form>
+          <div class="social-links">
+            <a
+              href="https://github.com/esha-gupta-11"
+              class="social-link"
+              target="_blank"
+              ><i class="ph-light ph-github-logo"></i
+            ></a>
+            <a
+              href="https://www.linkedin.com/in/esha-gupta-aa2889309"
+              class="social-link"
+              target="_blank"
+              ><i class="ph-light ph-linkedin-logo"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/myself._.esha/"
+              class="social-link"
+              target="_blank"
+              ><i class="ph ph-instagram-logo"></i
+            ></a>
+            <a
+              href="mailto:eshagupta9611vns@gmail.com"
+              class="social-link"
+              target="_blank"
+              ><i class="ph-light ph-envelope"></i
+            ></a>
+          </div>
+        </div>
+      </section>
 
       <footer>
         <div class="footer-particles"></div>
@@ -1296,11 +1312,12 @@
     <script>
       // ----- original typewriter, hamburger, particles etc (preserved) -----
       const typingElement = document.getElementById("typing-role");
-      const roles = ["Developer", "Developer"];
+      const roles = ["Developer", "Designer", "Creator"];
       let roleIndex = 0,
         charIndex = 0,
         isDeleting = false,
         isWaiting = false;
+      
       function typeWriter() {
         if (!typingElement) return;
         const currentRole = roles[roleIndex];
@@ -1324,6 +1341,8 @@
         }
         setTimeout(typeWriter, isWaiting ? 2000 : isDeleting ? 80 : 120);
       }
+      
+      // Hamburger menu
       const hamburger = document.querySelector(".hamburger");
       const navLinks = document.querySelector(".nav-links");
       if (hamburger) {
@@ -1338,14 +1357,19 @@
           }),
         );
       }
+      
+      // Smooth scroll
       document.querySelectorAll('a[href^="#"]').forEach((a) => {
         a.addEventListener("click", function (e) {
           e.preventDefault();
-          document
-            .querySelector(this.getAttribute("href"))
-            ?.scrollIntoView({ behavior: "smooth" });
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth" });
+          }
         });
       });
+      
+      // Start typewriter
       setTimeout(typeWriter, 500);
 
       // ---------- CAROUSEL INIT (your exact original) ----------
@@ -1628,50 +1652,48 @@
           });
         });
 
-    document.getElementById("contactForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+      // ---------- CONTACT FORM with FormSubmit (animation feedback) ----------
+      const contactForm = document.getElementById("contactForm");
+      const sendBtn = document.getElementById("sendBtn");
 
-  const btn = document.getElementById("sendBtn");
-  btn.innerText = "Sending...";
-  btn.disabled = true;
+      if (contactForm) {
+        contactForm.addEventListener("submit", function(e) {
+          // Visual feedback animation
+          gsap.to(sendBtn, {
+            scale: 0.95,
+            duration: 0.1,
+            yoyo: true,
+            repeat: 1
+          });
+          
+          // Change button text temporarily
+          sendBtn.textContent = "Sending...";
+          
+          // FormSubmit will handle the actual submission
+          // The form will redirect to FormSubmit's success page with the confirmation message
+          
+          // Note: We're not preventing default - FormSubmit handles the redirect
+          // This is the correct behavior for FormSubmit
+        });
+      }
 
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const message = document.getElementById("message").value.trim();
-
-  // Basic validation
-  if (!name || !email || !message) {
-    alert("Please fill all fields");
-    btn.innerText = "Send Message";
-    btn.disabled = false;
-    return;
-  }
-
- <script>
-document.getElementById("contactForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const status = document.getElementById("formStatus");
-
-  const params = {
-    name: document.getElementById("name").value,
-    email: document.getElementById("email").value,
-    message: document.getElementById("message").value
-  };
-
-  emailjs.send("service_f5n8bnf", "template_3nd7peg", params)
-    .then(function(response) {
-      status.innerHTML = "Message sent successfully!";
-      document.getElementById("contactForm").reset();
-    })
-    .catch(function(error) {
-      status.innerHTML = "Failed to send. Check console.";
-      console.log("EmailJS Error:", error);
-    });
-});
-</script>
-
+      // Footer particles
+      function createParticles() {
+        const container = document.querySelector('.footer-particles');
+        if (!container) return;
+        
+        for (let i = 0; i < 30; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          particle.style.left = Math.random() * 100 + '%';
+          particle.style.top = Math.random() * 100 + '%';
+          particle.style.animationDelay = Math.random() * 5 + 's';
+          particle.style.animationDuration = 5 + Math.random() * 10 + 's';
+          container.appendChild(particle);
+        }
+      }
+      
+      createParticles();
     </script>
   </body>
 </html>
-
