@@ -1265,9 +1265,9 @@
             method="POST"
           >
             <!-- FormSubmit configuration -->
-            <input type="hidden" name="_subject" value="New Portfolio Contact from Esha's Website">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="box">
+           <input type="hidden" name="_captcha" value="false">
+           <input type="hidden" name="_template" value="box">
+  
             
             <!-- Anti-spam honeypot (hidden field that bots might fill) -->
             <input type="text" name="_honey" style="display:none">
@@ -1665,30 +1665,7 @@
         },
       });
 
-      // ---------- RESUME DOWNLOAD (simulate download) ----------
-      document
-        .getElementById("resumeDownloadBtn")
-        .addEventListener("click", (e) => {
-          e.preventDefault();
-          // dummy pdf resume (text file as placeholder)
-          const resumeContent =
-            "Esha - Web Developer\nExperience: 1+ year freelance, MERN intern\nSkills: Shopify, WordPress, React, Node.js\nContact: eshagupta9611vns@gmail.com";
-          const blob = new Blob([resumeContent], { type: "application/pdf" }); // treat as pdf
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "Esha_Resume.pdf";
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-          gsap.to("#resumeDownloadBtn", {
-            scale: 0.95,
-            duration: 0.1,
-            yoyo: true,
-            repeat: 1,
-          });
-        });
+     
 
       // ---------- TOAST NOTIFICATION FUNCTION ----------
       function showToast(message, isError = false) {
@@ -1786,4 +1763,5 @@
     </script>
   </body>
 </html>
+
 
