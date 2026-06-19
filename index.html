@@ -327,6 +327,18 @@
       opacity:0; z-index:999; filter:drop-shadow(0 10px 12px black); transform-origin:center;
     }
 
+    /* view all projects button */
+    .view-all-projects-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 2.5rem;
+    }
+    .view-all-projects-wrap .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     /* hobby desktop 4 cards, mobile 2 per row */
     .hobby-container {
       max-width:1400px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:30px; padding:20px 0;
@@ -520,6 +532,11 @@
 
       <!-- MOBILE VERTICAL STACK -->
       <div class="mobile-project-stack" id="mobileProjectStack"></div>
+
+      <!-- VIEW ALL PROJECTS BUTTON -->
+      <div class="view-all-projects-wrap">
+        <a href="https://projects-gallary.vercel.app/" class="cta-button" target="_blank" rel="noopener">View All Projects <i class="ph-light ph-arrow-right"></i></a>
+      </div>
     </section>
 
     <!-- hobby -->
